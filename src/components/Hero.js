@@ -14,6 +14,12 @@ const Hero = () => {
   ];
 
   useEffect(() => {
+    // Preload all hero images
+    slides.forEach((slide) => {
+      const img = new Image();
+      img.src = slide;
+    });
+
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
     }, 5000);
@@ -46,7 +52,13 @@ const Hero = () => {
             className={`absolute w-full h-full bg-cover bg-center transition-opacity duration-1000 ${
               index === currentSlide ? "opacity-100" : "opacity-0"
             }`}
-            style={{ backgroundImage: `url(${slide})` }}
+            style={{ 
+              backgroundImage: `url(${slide})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              willChange: index === currentSlide ? "opacity" : "auto"
+            }}
+            loading="lazy"
           />
         ))}
         <div className="absolute w-full h-full bg-black/25 z-10" />
