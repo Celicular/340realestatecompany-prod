@@ -14,17 +14,21 @@ const Hero = () => {
   ];
 
   useEffect(() => {
-    // Preload all hero images
+    // Preload all hero images immediately
     slides.forEach((slide) => {
       const img = new Image();
       img.src = slide;
+      img.onload = () => console.log(`Image loaded: ${slide}`);
+      img.onerror = () => console.error(`Failed to load image: ${slide}`);
     });
 
+    // Start slideshow after a slight delay to ensure first image is rendered
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
     }, 5000);
+    
     return () => clearInterval(interval);
-  }, [slides.length]);
+  }, []);
 
   const socialLinks = [
     {
@@ -58,7 +62,6 @@ const Hero = () => {
               backgroundPosition: "center",
               willChange: index === currentSlide ? "opacity" : "auto"
             }}
-            loading="lazy"
           />
         ))}
         <div className="absolute w-full h-full bg-black/25 z-10" />
